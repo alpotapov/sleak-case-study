@@ -34,7 +34,7 @@ export type ConversationDTO = {
     duration_seconds: number | null
     recording_url: string | null
     state: StateLabel
-    transcription?: string | null
+    transcription_text?: string | null
     feedback?: string | null
 }
 
@@ -102,7 +102,7 @@ export const getConversationById = cache(async (id: string): Promise<Conversatio
         duration_seconds: data.duration_seconds,
         recording_url: data.recording_url,
         state: getStateLabel(ConversationState[data.state as keyof typeof ConversationState]),
-        transcription: data.transcription,
+        transcription_text: data.transcription_text,
         feedback: data.feedback,
     }
 })
