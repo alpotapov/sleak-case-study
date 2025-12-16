@@ -1,14 +1,39 @@
-import { cache } from 'react'
 import 'server-only'
+import { cache } from 'react'
 import { createClient } from '../supabase/server'
 import { getCurrentUser } from './auth'
+
+enum ConversationState {
+    UPLOADING = 0,
+    FILE_READY = 1,
+    TRANSCRIPTION_QUEUED = 2,
+    TRANSCRIBING = 3,
+    TRANSCRIPTION_READY = 4,
+    GENERATING_FEEDBACK = 5,
+    COMPLETED = 6,
+    ERROR = 7,
+}
+
+type StateLabel = {
+    label: string
+    color: string
+}
+
+const getStateLabel = (state: ConversationState) => {
+    if (state === 0) return { label: 'Uploading...', color: 'text-blue-600' }
+    if (state > 0 && state < 4) return { label: 'Transcribing audio...', color: 'text-yellow-600' }
+    if (state >= 4 && state < 6) return { label: 'Generating feedback...', color: 'text-purple-600' }
+    if (state === 6) return { label: 'Completed', color: 'text-green-600' }
+    if (state === 7) return { label: 'Error', color: 'text-red-600' }
+    return { label: 'Unknown', color: 'text-gray-600' }
+}
 
 export type ConversationDTO = {
     id: string
     title: string
     duration_seconds: number | null
     recording_url: string | null
-    state: 'UPLOADING' | 'TRANSCRIBING' | 'GENERATING_FEEDBACK' | 'COMPLETED' | 'ERROR'
+    state: StateLabel
     transcription?: string | null
     feedback?: string | null
 }
@@ -38,7 +63,7 @@ export const getOwnConversations = cache(async (): Promise<ConversationDTO[]> =>
         title: conversation.title,
         duration_seconds: conversation.duration_seconds,
         recording_url: conversation.recording_url,
-        state: conversation.state,
+        state: getStateLabel(ConversationState[conversation.state as keyof typeof ConversationState]),
         transcription: conversation.transcription,
         feedback: conversation.feedback,
     }))
@@ -76,7 +101,7 @@ export const getConversationById = cache(async (id: string): Promise<Conversatio
         title: data.title,
         duration_seconds: data.duration_seconds,
         recording_url: data.recording_url,
-        state: data.state,
+        state: getStateLabel(ConversationState[data.state as keyof typeof ConversationState]),
         transcription: data.transcription,
         feedback: data.feedback,
     }

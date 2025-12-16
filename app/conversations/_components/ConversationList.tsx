@@ -1,16 +1,7 @@
 'use client'
 
-import React from 'react'
 import Link from 'next/link'
 import { ConversationDTO } from '@/lib/data-access/conversations'
-
-const STATE_LABELS = {
-    UPLOADING: { label: 'Uploading...', color: 'text-blue-600' },
-    TRANSCRIBING: { label: 'Transcribing audio...', color: 'text-yellow-600' },
-    GENERATING_FEEDBACK: { label: 'Generating feedback...', color: 'text-purple-600' },
-    COMPLETED: { label: 'Done', color: 'text-green-600' },
-    ERROR: { label: 'Error', color: 'text-red-600' },
-}
 
 export function ConversationList({ conversations }: { conversations: ConversationDTO[] }) {
     return (
@@ -34,8 +25,8 @@ export function ConversationList({ conversations }: { conversations: Conversatio
                                     </p>
                                 )}
                             </div>
-                            <div className={`text-sm font-medium ${STATE_LABELS[conv.state].color}`}>
-                                {STATE_LABELS[conv.state].label}
+                            <div className={`text-sm font-medium ${conv.state.color}`}>
+                                {conv.state.label}
                             </div>
                         </div>
                     </Link>
