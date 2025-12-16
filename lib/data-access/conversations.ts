@@ -9,9 +9,10 @@ enum ConversationState {
     TRANSCRIPTION_QUEUED = 2,
     TRANSCRIBING = 3,
     TRANSCRIPTION_READY = 4,
-    GENERATING_FEEDBACK = 5,
-    COMPLETED = 6,
-    ERROR = 7,
+    FEEDBACK_GENERATION_QUEUED = 5,
+    FEEDBACK_GENERATING = 6,
+    COMPLETED = 7,
+    ERROR = 8,
 }
 
 type StateLabel = {
@@ -23,8 +24,8 @@ const getStateLabel = (state: ConversationState) => {
     if (state === 0) return { label: 'Uploading...', color: 'text-blue-600' }
     if (state > 0 && state < 4) return { label: 'Transcribing audio...', color: 'text-yellow-600' }
     if (state >= 4 && state < 6) return { label: 'Generating feedback...', color: 'text-purple-600' }
-    if (state === 6) return { label: 'Completed', color: 'text-green-600' }
-    if (state === 7) return { label: 'Error', color: 'text-red-600' }
+    if (state === 7) return { label: 'Completed', color: 'text-green-600' }
+    if (state === 8) return { label: 'Error', color: 'text-red-600' }
     return { label: 'Unknown', color: 'text-gray-600' }
 }
 

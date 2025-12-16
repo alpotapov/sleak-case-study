@@ -84,6 +84,8 @@ Deno.serve(async (req: Request) => {
             .from('conversations')
             .update({
                 feedback: res.content,
+                state: "COMPLETED",
+                updated_at: new Date(),
             })
             .eq('id', conversation_id)
 
