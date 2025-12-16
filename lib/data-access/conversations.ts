@@ -39,6 +39,28 @@ export type ConversationDTO = {
     feedback?: string | null
 }
 
+export type ConversationRow = {
+    id: string
+    title: string
+    duration_seconds: number | null
+    recording_url: string | null
+    state: string
+    transcription_text?: string | null
+    feedback?: string | null
+}
+
+const conversationMapper = (conversation: ConversationRow): ConversationDTO => {
+    return {
+        id: conversation.id,
+        title: conversation.title,
+        duration_seconds: conversation.duration_seconds,
+        recording_url: conversation.recording_url,
+        state: getStateLabel(ConversationState[conversation.state as keyof typeof ConversationState]),
+        transcription_text: conversation.transcription_text,
+        feedback: conversation.feedback,
+    }
+}
+
 export const getOwnConversations = cache(async (): Promise<ConversationDTO[]> => {
     const user = await getCurrentUser()
 
@@ -59,15 +81,7 @@ export const getOwnConversations = cache(async (): Promise<ConversationDTO[]> =>
         throw new Error('Failed to fetch conversations')
     }
 
-    const conversations: ConversationDTO[] = data.map((conversation) => ({
-        id: conversation.id,
-        title: conversation.title,
-        duration_seconds: conversation.duration_seconds,
-        recording_url: conversation.recording_url,
-        state: getStateLabel(ConversationState[conversation.state as keyof typeof ConversationState]),
-        transcription: conversation.transcription,
-        feedback: conversation.feedback,
-    }))
+    const conversations: ConversationDTO[] = data.map(conversationMapper)
 
     return conversations || []
 })
@@ -81,7 +95,7 @@ export const getConversationById = cache(async (id: string): Promise<Conversatio
 
     const supabase = await createClient()
 
-    const { data, error } = await supabase
+    const { data: conversation, error } = await supabase
         .from('conversations')
         .select('*')
         .eq('id', id)
@@ -93,17 +107,9 @@ export const getConversationById = cache(async (id: string): Promise<Conversatio
         throw new Error('Failed to fetch conversation')
     }
 
-    if (!data) {
+    if (!conversation) {
         throw new Error('Conversation not found')
     }
 
-    return {
-        id: data.id,
-        title: data.title,
-        duration_seconds: data.duration_seconds,
-        recording_url: data.recording_url,
-        state: getStateLabel(ConversationState[data.state as keyof typeof ConversationState]),
-        transcription_text: data.transcription_text,
-        feedback: data.feedback,
-    }
+    return conversationMapper(conversation);
 })
