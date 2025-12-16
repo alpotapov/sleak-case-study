@@ -1,21 +1,20 @@
 import { SiteHeader } from '@/components/site-header'
+import { UploadAudioWidget } from '@/app/conversations/_components/UploadAudioWidget'
+import { getOwnConversations } from '@/lib/data-access/conversations'
+import { ConversationList } from '@/app/conversations/_components/ConversationList'
 
-export default function Home() {
+export default async function Home() {
+    const conversations = await getOwnConversations()
+    
     return (
         <>
             <SiteHeader breadcrumbs={[{ title: 'Home', link: '/' }]} />
             <main className="@container/main flex flex-1 flex-col gap-2">
                 <div className="px-4 py-4 md:py-6 lg:px-6">
-                    {/* Main Content Section */}
-                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-                        {Array.from({ length: 3 }).map((_, index) => (
-                            <div key={index} className="bg-muted h-52 w-full rounded-lg"></div>
-                        ))}
-                    </div>
-                    <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-                        {Array.from({ length: 3 }).map((_, index) => (
-                            <div key={index} className="bg-muted h-52 w-full rounded-lg"></div>
-                        ))}
+                    <UploadAudioWidget />
+                    <div className="mt-8">
+                        <h2 className="text-2xl font-bold mb-4">Your Conversations</h2>
+                        <ConversationList conversations={conversations} />
                     </div>
                 </div>
             </main>
