@@ -57,9 +57,6 @@ export function UploadAudioWidget() {
             setFile(null)
             setUploadProgress('')
             router.refresh()
-            
-            // Optional: Navigate to the conversation detail page
-            // router.push(`/conversations/analyze/${conversationId}`)
         } catch (error) {
             console.error('Upload failed:', error)
             setUploadProgress('')
