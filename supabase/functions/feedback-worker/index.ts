@@ -97,6 +97,16 @@ Deno.serve(async (req: Request) => {
             })
         }
 
+        const { error: delErr } = await supabase.schema('pgmq_public').rpc('delete', {
+            queue_name: 'feedback_queue',
+            message_id: msg.msg_id,
+        })
+
+        if (delErr) {
+            console.error(`Failed to delete message ${msg.msg_id}`, delErr)
+            throw delErr
+        }
+
         processed.push(conversation_id)
     }
     return new Response(

@@ -34,7 +34,7 @@ Deno.serve(async (req: Request) => {
         // 1) Read messages from the transcription queue
         const { data: messages, error: readErr } = await supabase.schema('pgmq').rpc('read', {
             queue_name: 'transcription_queue',
-            vt: 30, // visibility timeout in seconds
+            vt: 300, // visibility timeout in seconds
             qty: 1, // process one message at a time
         })
 
@@ -94,11 +94,12 @@ Deno.serve(async (req: Request) => {
                 // 3) Delete message from queue (acknowledge)
                 const { error: delErr } = await supabase.schema('pgmq_public').rpc('delete', {
                     queue_name: 'transcription_queue',
-                    msg_id: msg.msg_id,
+                    message_id: msg.msg_id,
                 })
 
                 if (delErr) {
                     console.error(`Failed to delete message ${msg.msg_id}`, delErr)
+                    throw delErr
                 }
 
                 processed.push(conversation_id)
