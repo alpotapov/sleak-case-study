@@ -8,7 +8,7 @@ const STATE_LABELS = {
     UPLOADING: { label: 'Uploading...', color: 'text-blue-600' },
     TRANSCRIBING: { label: 'Transcribing audio...', color: 'text-yellow-600' },
     GENERATING_FEEDBACK: { label: 'Generating feedback...', color: 'text-purple-600' },
-    COMPLETED: { label: 'Ready', color: 'text-green-600' },
+    COMPLETED: { label: 'Done', color: 'text-green-600' },
     ERROR: { label: 'Error', color: 'text-red-600' },
 }
 
@@ -21,7 +21,7 @@ export function ConversationList({ conversations }: { conversations: Conversatio
                 conversations.map((conv) => (
                     <Link
                         key={conv.id}
-                        href={`/conversations/analyze/${conv.id}`}
+                        href={`/conversations/${conv.id}`}
                         className="hover:bg-accent block rounded-lg border p-4 transition-colors"
                     >
                         <div className="flex items-start justify-between">
