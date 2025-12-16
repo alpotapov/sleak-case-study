@@ -36,10 +36,10 @@ export async function confirmUpload(conversationId: string, storagePath: string)
     if (!user) throw new Error('Unauthorized')
     
     const supabase = await createClient()
-    
+
     const { data, error: updateError } = await supabase
         .from('conversations')
-        .update({ state: 'TRANSCRIBING' })
+        .update({ state: 'FILE_READY' })
         .eq('id', conversationId)
         .eq('created_by', user.id)
         .select()
@@ -52,9 +52,6 @@ export async function confirmUpload(conversationId: string, storagePath: string)
 
     console.log('Updated conversation:', data[0])
     
-    await supabase.functions.invoke('transcribe-audio', {
-        body: { conversationId, storagePath }
-    })
-    
     return { success: true }
 }
+
