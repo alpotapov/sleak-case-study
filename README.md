@@ -1,3 +1,24 @@
+# My Notes
+
+## User Stories
+- [x] As a user I want to receive an invite with a magic link via an email
+- [x] As a visiton I want to login using magic link
+- [x] As a visitor I want to be redirected to login view
+- [x] As a user I want to see an "upload audio" widget (file input and a button)
+- [x] As a user I want to click the button to upload audio file
+- [x] As a user I want to see a list of conversations
+	- [x] Workflow states: TRANSCRIBING, GENERATING_FEEDBACK, COMPLETED
+- [x] As a user I want to click on a list item and see the detail view
+- [x] As a user I want to refresh the page and see the transcription once it is available
+	- [x] Set up a webhook to receive transcription result from fal ai
+	- [x] Send request to fal.ai for transcription
+	- [x] Make the file_ready_scanner and transcription_worker execute using cron
+- [x] As a user I want to refresh the page and see the feedback once it is available
+- [ ] As a user I want to click the delete button to remove all data associated with the feedback workflow
+
+
+---
+
 # Sleak Full-Stack Case Study
 
 ## Your Task
