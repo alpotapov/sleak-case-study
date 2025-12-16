@@ -2,6 +2,7 @@ import 'server-only'
 import { cache } from 'react'
 import { createClient } from '../supabase/server'
 import { getCurrentUser } from './auth'
+import { redirect } from 'next/navigation'
 
 enum ConversationState {
     UPLOADING = 0,
@@ -65,7 +66,8 @@ export const getOwnConversations = cache(async (): Promise<ConversationDTO[]> =>
     const user = await getCurrentUser()
 
     if (!user) {
-        throw new Error('Unauthorized: User must be authenticated')
+        redirect('/auth/login');
+        // throw new Error('Unauthorized: User must be authenticated')
     }
 
     const supabase = await createClient()
@@ -90,7 +92,8 @@ export const getConversationById = cache(async (id: string): Promise<Conversatio
     const user = await getCurrentUser()
 
     if (!user) {
-        throw new Error('Unauthorized: User must be authenticated')
+        redirect('/auth/login');
+        // throw new Error('Unauthorized: User must be authenticated')
     }
 
     const supabase = await createClient()
