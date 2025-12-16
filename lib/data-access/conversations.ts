@@ -8,7 +8,7 @@ export type ConversationDTO = {
     title: string
     duration_seconds: number | null
     recording_url: string | null
-    status: 'UPLOADING' | 'TRANSCRIBING' | 'GENERATING_FEEDBACK' | 'COMPLETED' | 'ERROR'
+    state: 'UPLOADING' | 'TRANSCRIBING' | 'GENERATING_FEEDBACK' | 'COMPLETED' | 'ERROR'
 }
 
 export const getOwnConversations = cache(async (): Promise<ConversationDTO[]> => {
@@ -36,7 +36,7 @@ export const getOwnConversations = cache(async (): Promise<ConversationDTO[]> =>
         title: conversation.title,
         duration_seconds: conversation.duration_seconds,
         recording_url: conversation.recording_url,
-        status: conversation.status,
+        state: conversation.state,
     }))
 
     return conversations || []

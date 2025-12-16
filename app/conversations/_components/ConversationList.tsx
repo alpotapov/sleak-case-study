@@ -4,7 +4,7 @@ import React from 'react'
 import Link from 'next/link'
 import { ConversationDTO } from '@/lib/data-access/conversations'
 
-const STATUS_LABELS = {
+const STATE_LABELS = {
     UPLOADING: { label: 'Uploading...', color: 'text-blue-600' },
     TRANSCRIBING: { label: 'Transcribing audio...', color: 'text-yellow-600' },
     GENERATING_FEEDBACK: { label: 'Generating feedback...', color: 'text-purple-600' },
@@ -34,8 +34,8 @@ export function ConversationList({ conversations }: { conversations: Conversatio
                                     </p>
                                 )}
                             </div>
-                            <div className={`text-sm font-medium ${STATUS_LABELS[conv.status].color}`}>
-                                {STATUS_LABELS[conv.status].label}
+                            <div className={`text-sm font-medium ${STATE_LABELS[conv.state].color}`}>
+                                {STATE_LABELS[conv.state].label}
                             </div>
                         </div>
                     </Link>
